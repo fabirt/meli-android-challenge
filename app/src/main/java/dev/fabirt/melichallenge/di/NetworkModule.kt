@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.fabirt.melichallenge.data.network.client.KtorHttpClient
+import dev.fabirt.melichallenge.data.network.client.MeliApiClient
 import io.ktor.client.*
 import javax.inject.Singleton
 
@@ -15,4 +16,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideHttpClient(): HttpClient = KtorHttpClient.create()
+
+    @Provides
+    @Singleton
+    fun provideMeliApiClient(client: HttpClient) = MeliApiClient(client)
 }
