@@ -1,7 +1,9 @@
 package dev.fabirt.melichallenge.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -9,15 +11,21 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import dev.fabirt.melichallenge.R
 import dev.fabirt.melichallenge.domain.entities.ProductDetail
 import dev.fabirt.melichallenge.ui.component.EmphasisText
@@ -47,7 +55,9 @@ fun ProductDetailScreen(itemId: String) {
             Resource.Loading -> {}
             is Resource.Success -> {
                 val detail = detailResource.data
-                DetailContent(detail)
+                DetailContent(
+                    detail = detail,
+                )
             }
         }
     }
@@ -74,9 +84,15 @@ private fun TopAppBar(
     )
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun DetailContent(detail: ProductDetail) {
+fun DetailContent(
+    detail: ProductDetail,
+) {
     val scrollState = rememberScrollState()
+    val pagerState = rememberPagerState()
+    val currentPage = pagerState.currentPage + 1
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -106,7 +122,38 @@ fun DetailContent(detail: ProductDetail) {
         }
         Spacer(modifier = Modifier.height(16.dp))
         if (detail.hasPictures) {
-
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colors.onBackground.copy(alpha = 0.08f))
+                    .padding(horizontal = 8.dp, vertical = 2.dp),
+            ) {
+                Text(
+                    text = "$currentPage / ${detail.pictures.count()}",
+                    style = MaterialTheme.typography.caption.copy(
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+            HorizontalPager(
+                count = detail.pictures.count(),
+                state = pagerState
+            ) { page ->
+                val picture = detail.pictures[page]
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(picture.url)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = stringResource(R.string.cd_thumbnail),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(3f / 2f)
+                )
+            }
         } else {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
