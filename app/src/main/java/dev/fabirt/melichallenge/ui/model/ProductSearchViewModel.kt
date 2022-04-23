@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.fabirt.melichallenge.domain.entities.ProductSearchResult
 import dev.fabirt.melichallenge.domain.repository.MeliRepository
+import dev.fabirt.melichallenge.error.Failure
 import dev.fabirt.melichallenge.util.Debouncer
 import dev.fabirt.melichallenge.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +48,10 @@ class ProductSearchViewModel @Inject constructor(
         _productSearch.value = Resource.Loading
         val result = repository.searchProduct(query, PAGE_SIZE, 0)
         result.fold(
-            { _productSearch.value = Resource.Error(it) },
+            {
+                if (it is Failure.Cancellation) return@fold
+                _productSearch.value = Resource.Error(it)
+            },
             {
                 _productSearch.value = Resource.Success(it)
                 _canLoadMore.value = it.paging.total > PAGE_SIZE

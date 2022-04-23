@@ -11,6 +11,8 @@ sealed class Failure(@StringRes val key: Int) {
 
     object Unexpected : Failure(R.string.unexpected_error)
 
+    object Cancellation : Failure(R.string.unexpected_error)
+
     class Custom(@StringRes key: Int) : Failure(key)
 
     @Composable
