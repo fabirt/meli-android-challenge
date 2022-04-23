@@ -24,6 +24,7 @@ fun SearchBar(
     value: String,
     onValueChange: (String) -> Unit,
     onValueClear: () -> Unit,
+    modifier: Modifier = Modifier,
     onDone: (() -> Unit)? = null
 ) {
     TextField(
@@ -55,7 +56,7 @@ fun SearchBar(
             unfocusedIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent
         ),
-        modifier = Modifier
+        modifier = modifier
             .shadow(4.dp)
             .background(color = MaterialTheme.colors.surface)
             .height(60.dp)

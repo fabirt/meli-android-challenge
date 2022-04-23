@@ -30,6 +30,7 @@ import com.google.accompanist.pager.rememberPagerState
 import dev.fabirt.melichallenge.R
 import dev.fabirt.melichallenge.domain.entities.ProductDetail
 import dev.fabirt.melichallenge.error.Failure
+import dev.fabirt.melichallenge.ui.component.DetailShimmer
 import dev.fabirt.melichallenge.ui.component.EmphasisText
 import dev.fabirt.melichallenge.ui.model.DetailViewModel
 import dev.fabirt.melichallenge.ui.navigation.Navigator
@@ -60,8 +61,8 @@ fun ProductDetailScreen(itemId: String) {
                     }
                 )
             }
-            Resource.Idle -> {}
-            Resource.Loading -> {}
+            Resource.Idle -> { DetailShimmer() }
+            Resource.Loading -> { DetailShimmer() }
             is Resource.Success -> {
                 val detail = detailResource.data
                 DetailContent(
