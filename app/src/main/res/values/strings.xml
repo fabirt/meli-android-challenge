@@ -4,4 +4,5 @@
     <string name="network_error">Parece que no estás conectado a Internet, resiva tu conexión e intenta de nuevo</string>
     <string name="hint_search">Buscar</string>
     <string name="cd_clear">Borrar</string>
+    <string name="free_shipping">Envío gratis</string>
 </resources>
