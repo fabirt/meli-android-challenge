@@ -12,4 +12,11 @@ data class ProductDetail(
     val thumbnail: String,
     val pictures: List<Picture>,
     val shipping: ProductShipping
-)
+) {
+
+    val hasDiscount: Boolean
+        get() = price < basePrice
+
+    val hasPictures: Boolean
+        get() = pictures.isNotEmpty()
+}
