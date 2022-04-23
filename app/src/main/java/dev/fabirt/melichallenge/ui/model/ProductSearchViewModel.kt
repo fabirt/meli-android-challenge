@@ -30,6 +30,7 @@ class ProductSearchViewModel @Inject constructor(
 
     fun changeQuery(value: String) {
         _query.value = value
+        if (value.isBlank()) return
         searchDebouncer.launch(viewModelScope) {
             searchProduct(value)
         }
@@ -40,6 +41,7 @@ class ProductSearchViewModel @Inject constructor(
     }
 
     private suspend fun searchProduct(query: String) {
+        _productSearch.value = Resource.Loading
         val result = repository.searchProduct(query, 10, 0)
         result.fold(
             { _productSearch.value = Resource.Error(it) },

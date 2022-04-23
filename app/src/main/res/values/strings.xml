@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Meli Challenge - FD</string>
     <string name="unexpected_error">Ocurrió un error inesperado, por favor intenta de nuevo</string>
-    <string name="network_error">Parece que no estás conectado a Internet, resiva tu conexión e intenta de nuevo</string>
+    <string name="network_error">Parece que no estás conectado a Internet, revisa tu conexión e intenta de nuevo</string>
     <string name="hint_search">Buscar</string>
     <string name="cd_clear">Borrar</string>
     <string name="free_shipping">Envío gratis</string>
+    <string name="empty_search_result">Busca publicaciones en Meli</string>
+    <string name="no_result_for">No encontramos resultados para %1$s</string>
 </resources>

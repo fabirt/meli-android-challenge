@@ -2,15 +2,22 @@ package dev.fabirt.melichallenge.ui.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.fabirt.melichallenge.R
 import dev.fabirt.melichallenge.ui.component.ProductListView
 import dev.fabirt.melichallenge.ui.component.SearchBar
 import dev.fabirt.melichallenge.ui.model.ProductSearchViewModel
@@ -40,16 +47,46 @@ fun ProductSearchScreen() {
                 onDone = { clearFocus(focusManager, textInputService) }
             )
             when (searchResult) {
-                is Resource.Error -> { }
-                Resource.Idle -> { }
-                Resource.Loading -> { }
-                is Resource.Success -> {
-                    ProductListView(
-                        data = searchResult.data.results,
-                        onItemClick = { _, _ -> }
+                is Resource.Error -> {
+                    NoDataText(searchResult.failure.translate())
+                }
+                Resource.Idle -> {
+                    NoDataText(stringResource(R.string.empty_search_result))
+                }
+                Resource.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(vertical = 16.dp)
                     )
+                }
+                is Resource.Success -> {
+                    if (searchResult.data.results.isEmpty()) {
+                        NoResultFor(searchResult.data.query)
+                    } else {
+                        ProductListView(
+                            data = searchResult.data.results,
+                            onItemClick = { _, _ -> }
+                        )
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+fun NoDataText(text: String) {
+    Text(
+        text = text,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
+}
+
+@Composable
+fun NoResultFor(text: String) {
+    Text(
+        text = stringResource(R.string.no_result_for, text),
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }

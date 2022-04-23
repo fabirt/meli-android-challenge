@@ -7,9 +7,9 @@ import dev.fabirt.melichallenge.R
 
 sealed class Failure(@StringRes val key: Int) {
 
-    object Network : Failure(R.string.unexpected_error)
+    object Network : Failure(R.string.network_error)
 
-    object Unexpected : Failure(R.string.network_error)
+    object Unexpected : Failure(R.string.unexpected_error)
 
     class Custom(@StringRes key: Int) : Failure(key)
 
