@@ -2,4 +2,6 @@
     <string name="app_name">Meli Challenge - FD</string>
     <string name="unexpected_error">Ocurrió un error inesperado, por favor intenta de nuevo</string>
     <string name="network_error">Parece que no estás conectado a Internet, resiva tu conexión e intenta de nuevo</string>
+    <string name="hint_search">Buscar</string>
+    <string name="cd_clear">Borrar</string>
 </resources>
