@@ -11,17 +11,20 @@ class MeliServiceImpl(
     private val client: MeliApiClient
 ) : MeliService {
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
+
     override suspend fun searchProduct(
         query: String,
         limit: Int,
         offset: Int
     ): ProductSearchResultDto {
-        val json = client.get(PRODUCT_SEARCH_PATH) {
-            parameter("query", query)
+        val response = client.get(PRODUCT_SEARCH_PATH) {
+            parameter("q", query)
             parameter("limit", limit)
             parameter("offset", offset)
         }
-
-        return Json.decodeFromJsonElement(json)
+        return json.decodeFromJsonElement(response)
     }
 }

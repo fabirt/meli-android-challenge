@@ -35,6 +35,10 @@ class ProductSearchViewModel @Inject constructor(
         }
     }
 
+    fun clearQuery() {
+        _query.value = ""
+    }
+
     private suspend fun searchProduct(query: String) {
         val result = repository.searchProduct(query, 10, 0)
         result.fold(
