@@ -3,6 +3,7 @@ buildscript {
         compose_version = '1.1.1'
         hilt_version = '2.41'
         ktor_version = '1.6.2'
+        arrow_version = '1.0.1'
     }
 
     dependencies {

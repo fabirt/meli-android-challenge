@@ -72,4 +72,6 @@ dependencies {
     implementation "io.ktor:ktor-client-serialization:$ktor_version"
     implementation "io.ktor:ktor-client-logging-jvm:$ktor_version"
     testImplementation "io.ktor:ktor-client-mock:$ktor_version"
+
+    implementation "io.arrow-kt:arrow-core:$arrow_version"
 }
