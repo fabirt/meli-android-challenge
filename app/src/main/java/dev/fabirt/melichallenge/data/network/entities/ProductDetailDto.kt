@@ -19,6 +19,7 @@ data class ProductDetailDto(
     val availableQuantity: Long,
     @SerialName("secure_thumbnail")
     val thumbnail: String,
+    val permalink: String,
     val pictures: List<PictureDto>,
     val shipping: ProductShippingDto
 )

@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -42,6 +43,7 @@ fun ProductDetailScreen(itemId: String) {
     val navController = Navigator.current
     val detailViewModel = hiltViewModel<DetailViewModel>()
     val detailResource = detailViewModel.detail.collectAsState().value
+    val context = LocalContext.current
 
     LaunchedEffect(itemId) {
         detailViewModel.initialize(itemId)
@@ -49,7 +51,15 @@ fun ProductDetailScreen(itemId: String) {
 
     Scaffold(
         topBar = {
-            TopAppBar { navController.popBackStack() }
+            TopAppBar(
+                onGoBack = { navController.popBackStack() },
+                onShare = when(detailResource) {
+                    is Resource.Success -> {
+                        { detailViewModel.sharePermalink(context, detailResource.data) }
+                    }
+                    else -> null
+                }
+            )
         }
     ) {
         when (detailResource) {
@@ -61,8 +71,12 @@ fun ProductDetailScreen(itemId: String) {
                     }
                 )
             }
-            Resource.Idle -> { DetailShimmer() }
-            Resource.Loading -> { DetailShimmer() }
+            Resource.Idle -> {
+                DetailShimmer()
+            }
+            Resource.Loading -> {
+                DetailShimmer()
+            }
             is Resource.Success -> {
                 val detail = detailResource.data
                 DetailContent(
@@ -76,7 +90,8 @@ fun ProductDetailScreen(itemId: String) {
 
 @Composable
 private fun TopAppBar(
-    onGoBack: () -> Unit
+    onGoBack: () -> Unit,
+    onShare: (() -> Unit)? = null
 ) {
     TopAppBar(
         title = {
@@ -90,6 +105,16 @@ private fun TopAppBar(
                         R.string.cd_back
                     )
                 )
+            }
+        },
+        actions = {
+            if (onShare != null) {
+                IconButton(onClick = onShare) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = stringResource(R.string.cd_share)
+                    )
+                }
             }
         }
     )

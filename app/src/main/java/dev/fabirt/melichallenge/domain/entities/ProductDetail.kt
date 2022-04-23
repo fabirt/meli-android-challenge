@@ -10,6 +10,7 @@ data class ProductDetail(
     val soldQuantity: Long,
     val availableQuantity: Long,
     val thumbnail: String,
+    val permalink: String,
     val pictures: List<Picture>,
     val shipping: ProductShipping
 ) {

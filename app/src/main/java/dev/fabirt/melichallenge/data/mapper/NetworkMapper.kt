@@ -31,6 +31,7 @@ fun ProductDetailDto.toDomainEntity() = ProductDetail(
     soldQuantity = soldQuantity,
     availableQuantity = availableQuantity,
     thumbnail = thumbnail,
+    permalink = permalink,
     pictures = pictures.map { it.toDomainEntity() },
     shipping = shipping.toDomainEntity()
 )
