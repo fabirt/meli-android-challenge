@@ -30,4 +30,9 @@ class DetailViewModel @Inject constructor(
             )
         }
     }
+
+    fun refresh(id: String) {
+        _detail.value = Resource.Loading
+        initialize(id)
+    }
 }

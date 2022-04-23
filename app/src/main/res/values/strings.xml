@@ -13,4 +13,5 @@
     <string name="sold_quantity">%1$d vendidos</string>
     <string name="buy_now">Comprar ahora</string>
     <string name="add_to_cart">Agregar al carrito</string>
+    <string name="retry">Reintentar</string>
 </resources>

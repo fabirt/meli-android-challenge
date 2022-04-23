@@ -11,13 +11,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +29,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import dev.fabirt.melichallenge.R
 import dev.fabirt.melichallenge.domain.entities.ProductDetail
+import dev.fabirt.melichallenge.error.Failure
 import dev.fabirt.melichallenge.ui.component.EmphasisText
 import dev.fabirt.melichallenge.ui.model.DetailViewModel
 import dev.fabirt.melichallenge.ui.navigation.Navigator
@@ -50,13 +52,21 @@ fun ProductDetailScreen(itemId: String) {
         }
     ) {
         when (detailResource) {
-            is Resource.Error -> {}
+            is Resource.Error -> {
+                ErrorView(
+                    failure = detailResource.failure,
+                    onRetry = {
+                        detailViewModel.refresh(itemId)
+                    }
+                )
+            }
             Resource.Idle -> {}
             Resource.Loading -> {}
             is Resource.Success -> {
                 val detail = detailResource.data
                 DetailContent(
                     detail = detail,
+                    onBuyNow = { navController.popBackStack() }
                 )
             }
         }
@@ -86,8 +96,9 @@ private fun TopAppBar(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun DetailContent(
+private fun DetailContent(
     detail: ProductDetail,
+    onBuyNow: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val pagerState = rememberPagerState()
@@ -194,7 +205,7 @@ fun DetailContent(
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { },
+            onClick = onBuyNow,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
@@ -203,7 +214,7 @@ fun DetailContent(
             Text(stringResource(R.string.buy_now))
         }
         OutlinedButton(
-            onClick = { },
+            onClick = onBuyNow,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
@@ -212,6 +223,37 @@ fun DetailContent(
             )
         ) {
             Text(stringResource(R.string.add_to_cart))
+        }
+    }
+}
+
+@Composable
+private fun ErrorView(
+    failure: Failure,
+    onRetry: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        EmphasisText(
+            text = failure.translate(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = onRetry,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            elevation = ButtonDefaults.elevation(0.dp, 0.dp),
+        ) {
+            Text(
+                stringResource(R.string.retry),
+            )
         }
     }
 }

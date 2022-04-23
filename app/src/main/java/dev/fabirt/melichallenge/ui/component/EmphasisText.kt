@@ -9,6 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 
 @Composable
@@ -19,6 +20,7 @@ fun EmphasisText(
     color: Color = Color.Unspecified,
     style: TextStyle = MaterialTheme.typography.body2,
     textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
 ) {
     CompositionLocalProvider(LocalContentAlpha provides contentAlpha) {
         Text(
@@ -26,7 +28,8 @@ fun EmphasisText(
             modifier = modifier,
             color = color,
             style = style,
-            textDecoration = textDecoration
+            textDecoration = textDecoration,
+            textAlign = textAlign
         )
     }
 }
