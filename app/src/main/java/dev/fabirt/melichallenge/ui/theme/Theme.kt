@@ -1,6 +1,5 @@
 package dev.fabirt.melichallenge.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
@@ -20,17 +19,11 @@ private val LightColorPalette = lightColors(
     secondary = Teal200,
     background = Color(0xFFF5F8FA),
     surface = Color.White,
-    /* Other default colors to override
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
 )
 
 @Composable
 fun MeliChallengeTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
