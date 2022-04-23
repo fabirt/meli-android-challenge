@@ -15,6 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.fabirt.melichallenge.R
@@ -95,8 +98,18 @@ fun NoDataText(text: String) {
 
 @Composable
 fun NoResultFor(text: String) {
+    val builder = AnnotatedString.Builder()
+    val boldText = "\"$text\""
+    val contentText = stringResource(R.string.no_result_for, boldText)
+    builder.append(contentText)
+    val start = contentText.indexOf(boldText)
+    val end = start + boldText.length
+    val queryStyle = SpanStyle(
+        fontWeight = FontWeight.Bold
+    )
+    builder.addStyle(queryStyle, start, end)
     Text(
-        text = stringResource(R.string.no_result_for, text),
+        text = builder.toAnnotatedString(),
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     )
 }

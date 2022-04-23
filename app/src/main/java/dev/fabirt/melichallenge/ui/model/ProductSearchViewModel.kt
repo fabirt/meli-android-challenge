@@ -16,6 +16,9 @@ import javax.inject.Inject
 class ProductSearchViewModel @Inject constructor(
     private val repository: MeliRepository
 ) : ViewModel() {
+    companion object {
+        private const val PAGE_SIZE = 10
+    }
 
     private val _query = MutableStateFlow("")
     val query: StateFlow<String> get() = _query
@@ -26,7 +29,7 @@ class ProductSearchViewModel @Inject constructor(
     private val _canLoadMore = MutableStateFlow(true)
     val canLoadMore: StateFlow<Boolean> get() = _canLoadMore
 
-    private val searchDebouncer = Debouncer(300)
+    private val searchDebouncer = Debouncer(400)
 
     fun changeQuery(value: String) {
         _query.value = value
@@ -42,10 +45,13 @@ class ProductSearchViewModel @Inject constructor(
 
     private suspend fun searchProduct(query: String) {
         _productSearch.value = Resource.Loading
-        val result = repository.searchProduct(query, 10, 0)
+        val result = repository.searchProduct(query, PAGE_SIZE, 0)
         result.fold(
             { _productSearch.value = Resource.Error(it) },
-            { _productSearch.value = Resource.Success(it) }
+            {
+                _productSearch.value = Resource.Success(it)
+                _canLoadMore.value = it.paging.total > PAGE_SIZE
+            }
         )
     }
 
@@ -56,11 +62,10 @@ class ProductSearchViewModel @Inject constructor(
         val thresholdIndex = products.count() - 2
         if (itemIndex != thresholdIndex) return
 
-        val limit = 10
-        val offset = products.count() / limit
+        val offset = products.count() / PAGE_SIZE
 
         viewModelScope.launch {
-            val result = repository.searchProduct(_query.value, limit, offset)
+            val result = repository.searchProduct(_query.value, PAGE_SIZE, offset)
             result.fold(
                 { _canLoadMore.value = false },
                 { newResult ->
