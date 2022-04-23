@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.fabirt.melichallenge.domain.entities.ProductSearchResult
 import dev.fabirt.melichallenge.domain.repository.MeliRepository
+import dev.fabirt.melichallenge.util.Debouncer
 import dev.fabirt.melichallenge.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,18 +26,21 @@ class ProductSearchViewModel @Inject constructor(
     private val _pagingState = MutableStateFlow<Resource<Nothing>>(Resource.Idle)
     val pagingState: StateFlow<Resource<Nothing>> get() = _pagingState
 
+    private val searchDebouncer = Debouncer(300)
+
     fun changeQuery(value: String) {
         _query.value = value
+        searchDebouncer.launch(viewModelScope) {
+            searchProduct(value)
+        }
     }
 
-    private fun searchProduct() {
-        viewModelScope.launch {
-            val result = repository.searchProduct(_query.value, 10, 0)
-            result.fold(
-                { _productSearch.value = Resource.Error(it) },
-                { _productSearch.value = Resource.Success(it) }
-            )
-        }
+    private suspend fun searchProduct(query: String) {
+        val result = repository.searchProduct(query, 10, 0)
+        result.fold(
+            { _productSearch.value = Resource.Error(it) },
+            { _productSearch.value = Resource.Success(it) }
+        )
     }
 
     private fun loadMore(itemIndex: Int) {
