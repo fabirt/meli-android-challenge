@@ -1,13 +1,7 @@
 package dev.fabirt.melichallenge.data.mapper
 
-import dev.fabirt.melichallenge.data.network.entities.ProductDto
-import dev.fabirt.melichallenge.data.network.entities.ProductSearchResultDto
-import dev.fabirt.melichallenge.data.network.entities.ProductShippingDto
-import dev.fabirt.melichallenge.data.network.entities.SearchPagingDto
-import dev.fabirt.melichallenge.domain.entities.Product
-import dev.fabirt.melichallenge.domain.entities.ProductSearchResult
-import dev.fabirt.melichallenge.domain.entities.ProductShipping
-import dev.fabirt.melichallenge.domain.entities.SearchPaging
+import dev.fabirt.melichallenge.data.network.entities.*
+import dev.fabirt.melichallenge.domain.entities.*
 
 fun SearchPagingDto.toDomainEntity() = SearchPaging(
     total, primaryResults, offset, limit
@@ -24,3 +18,19 @@ fun ProductDto.toDomainEntity() = Product(
 )
 
 fun List<ProductDto>.toDomainList() = map { it.toDomainEntity() }
+
+fun PictureDto.toDomainEntity() = Picture(id, url)
+
+fun ProductDetailDto.toDomainEntity() = ProductDetail(
+    id = id,
+    siteId = siteId,
+    title = title,
+    subtitle = subtitle,
+    price = price,
+    basePrice = basePrice,
+    soldQuantity = soldQuantity,
+    availableQuantity = availableQuantity,
+    thumbnail = thumbnail,
+    pictures = pictures.map { it.toDomainEntity() },
+    shipping = shipping.toDomainEntity()
+)

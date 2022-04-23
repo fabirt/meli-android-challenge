@@ -3,6 +3,7 @@ package dev.fabirt.melichallenge.data.repository
 import arrow.core.Either
 import dev.fabirt.melichallenge.data.mapper.toDomainEntity
 import dev.fabirt.melichallenge.data.network.service.MeliService
+import dev.fabirt.melichallenge.domain.entities.ProductDetail
 import dev.fabirt.melichallenge.domain.entities.ProductSearchResult
 import dev.fabirt.melichallenge.domain.repository.MeliRepository
 import dev.fabirt.melichallenge.error.Failure
@@ -18,6 +19,13 @@ class MeliRepositoryImpl(
     ): Either<Failure, ProductSearchResult> {
         return myRunCatching {
             val result = service.searchProduct(query, limit, offset)
+            Either.Right(result.toDomainEntity())
+        }
+    }
+
+    override suspend fun searchDetail(id: String): Either<Failure, ProductDetail> {
+        return myRunCatching {
+            val result = service.searchDetail(id)
             Either.Right(result.toDomainEntity())
         }
     }
