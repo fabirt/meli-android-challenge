@@ -3,14 +3,12 @@ package dev.fabirt.melichallenge.ui.screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
@@ -22,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.fabirt.melichallenge.R
 import dev.fabirt.melichallenge.ui.component.ProductListView
+import dev.fabirt.melichallenge.ui.component.ProductShimmer
 import dev.fabirt.melichallenge.ui.component.SearchBar
 import dev.fabirt.melichallenge.ui.model.ProductSearchViewModel
 import dev.fabirt.melichallenge.ui.navigation.Destination
@@ -61,11 +60,7 @@ fun ProductSearchScreen() {
                     NoDataText(stringResource(R.string.empty_search_result))
                 }
                 Resource.Loading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(vertical = 16.dp)
-                    )
+                    ProductLoader()
                 }
                 is Resource.Success -> {
                     if (searchResult.data.results.isEmpty()) {
@@ -112,4 +107,15 @@ fun NoResultFor(text: String) {
         text = builder.toAnnotatedString(),
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     )
+}
+
+@Composable
+fun ProductLoader() {
+    Column(
+        modifier = Modifier.padding(top = 8.dp)
+    ) {
+        for (i in 1..10) {
+            ProductShimmer()
+        }
+    }
 }
