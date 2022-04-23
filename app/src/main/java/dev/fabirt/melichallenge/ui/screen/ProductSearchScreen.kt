@@ -28,6 +28,7 @@ import dev.fabirt.melichallenge.util.clearFocus
 fun ProductSearchScreen() {
     val searchViewModel = viewModel<ProductSearchViewModel>()
     val query by searchViewModel.query.collectAsState()
+    val canLoadMore by searchViewModel.canLoadMore.collectAsState()
     val searchResult = searchViewModel.productSearch.collectAsState().value
 
     val focusManager = LocalFocusManager.current
@@ -66,7 +67,9 @@ fun ProductSearchScreen() {
                     } else {
                         ProductListView(
                             data = searchResult.data.results,
-                            onItemClick = { _, _ -> }
+                            showFooterLoader = canLoadMore,
+                            onItemClick = { _, _ -> },
+                            onItemAppear = searchViewModel::loadMore
                         )
                     }
                 }

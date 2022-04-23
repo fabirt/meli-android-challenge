@@ -23,8 +23,8 @@ class ProductSearchViewModel @Inject constructor(
     private val _productSearch = MutableStateFlow<Resource<ProductSearchResult>>(Resource.Idle)
     val productSearch: StateFlow<Resource<ProductSearchResult>> get() = _productSearch
 
-    private val _pagingState = MutableStateFlow<Resource<Nothing>>(Resource.Idle)
-    val pagingState: StateFlow<Resource<Nothing>> get() = _pagingState
+    private val _canLoadMore = MutableStateFlow(true)
+    val canLoadMore: StateFlow<Boolean> get() = _canLoadMore
 
     private val searchDebouncer = Debouncer(300)
 
@@ -49,25 +49,26 @@ class ProductSearchViewModel @Inject constructor(
         )
     }
 
-    private fun loadMore(itemIndex: Int) {
+    fun loadMore(itemIndex: Int) {
         val currentResult = _productSearch.value as? Resource.Success ?: return
         val products = currentResult.data.results.toMutableList()
 
         val thresholdIndex = products.count() - 2
         if (itemIndex != thresholdIndex) return
 
-        _pagingState.value = Resource.Loading
+        val limit = 10
+        val offset = products.count() / limit
 
         viewModelScope.launch {
-            val result = repository.searchProduct(_query.value, 10, 0)
+            val result = repository.searchProduct(_query.value, limit, offset)
             result.fold(
-                { _pagingState.value = Resource.Error(it) },
+                { _canLoadMore.value = false },
                 { newResult ->
                     products.addAll(newResult.results)
-                    _pagingState.value = Resource.Idle
                     _productSearch.value = Resource.Success(
                         newResult.copy(results = products)
                     )
+                    _canLoadMore.value = newResult.results.isNotEmpty()
                 }
             )
         }
