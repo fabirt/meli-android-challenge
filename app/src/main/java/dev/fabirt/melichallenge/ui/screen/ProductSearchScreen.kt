@@ -16,23 +16,26 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import dev.fabirt.melichallenge.R
 import dev.fabirt.melichallenge.ui.component.ProductListView
 import dev.fabirt.melichallenge.ui.component.SearchBar
 import dev.fabirt.melichallenge.ui.model.ProductSearchViewModel
+import dev.fabirt.melichallenge.ui.navigation.Destination
+import dev.fabirt.melichallenge.ui.navigation.Navigator
 import dev.fabirt.melichallenge.util.Resource
 import dev.fabirt.melichallenge.util.clearFocus
 
 @Composable
 fun ProductSearchScreen() {
-    val searchViewModel = viewModel<ProductSearchViewModel>()
+    val searchViewModel = hiltViewModel<ProductSearchViewModel>()
     val query by searchViewModel.query.collectAsState()
     val canLoadMore by searchViewModel.canLoadMore.collectAsState()
     val searchResult = searchViewModel.productSearch.collectAsState().value
 
     val focusManager = LocalFocusManager.current
     val textInputService = LocalTextInputService.current
+    val navController = Navigator.current
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -68,7 +71,11 @@ fun ProductSearchScreen() {
                         ProductListView(
                             data = searchResult.data.results,
                             showFooterLoader = canLoadMore,
-                            onItemClick = { _, _ -> },
+                            onItemClick = { _, p ->
+                                navController.navigate(
+                                    Destination.DETAIL.replace("{id}", p.id)
+                                )
+                            },
                             onItemAppear = searchViewModel::loadMore
                         )
                     }

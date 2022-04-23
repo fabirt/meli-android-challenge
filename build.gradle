@@ -4,6 +4,7 @@ buildscript {
         hilt_version = '2.41'
         ktor_version = '1.6.2'
         arrow_version = '1.0.1'
+        nav_version = '2.4.2'
     }
 
     dependencies {

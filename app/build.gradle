@@ -79,4 +79,8 @@ dependencies {
 
     // Async image loading
     implementation "io.coil-kt:coil-compose:2.0.0-rc03"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 }
