@@ -7,4 +7,5 @@
     <string name="free_shipping">Envío gratis</string>
     <string name="empty_search_result">Busca publicaciones en Meli</string>
     <string name="no_result_for">No encontramos resultados para %1$s</string>
+    <string name="cd_thumbnail">Miniatura de la publicación</string>
 </resources>

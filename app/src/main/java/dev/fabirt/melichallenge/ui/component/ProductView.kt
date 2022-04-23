@@ -12,9 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import dev.fabirt.melichallenge.R
 import dev.fabirt.melichallenge.domain.entities.Product
 import dev.fabirt.melichallenge.domain.entities.ProductShipping
@@ -35,9 +39,19 @@ fun ProductView(
         Box(
             modifier = Modifier
                 .size(88.dp)
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(8.dp))
                 .background(Color.LightGray)
-        )
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(product.thumbnail)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = stringResource(R.string.cd_thumbnail),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
         Spacer(modifier = Modifier.width(16.dp))
 
         Column(

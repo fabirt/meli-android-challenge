@@ -76,4 +76,7 @@ dependencies {
     testImplementation "io.ktor:ktor-client-mock:$ktor_version"
 
     implementation "io.arrow-kt:arrow-core:$arrow_version"
+
+    // Async image loading
+    implementation "io.coil-kt:coil-compose:2.0.0-rc03"
 }
