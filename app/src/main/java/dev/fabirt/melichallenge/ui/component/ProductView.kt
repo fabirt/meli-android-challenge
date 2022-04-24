@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ fun ProductView(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
+            .testTag("product_${product.id}")
             .clickable(onClick = onClick)
             .padding(16.dp)
     ) {

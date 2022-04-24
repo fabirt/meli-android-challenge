@@ -1,17 +1,19 @@
 package dev.fabirt.melichallenge.ui
 
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dev.fabirt.melichallenge.util.waitFor
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
+@HiltAndroidTest
 class MainActivityTest {
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
@@ -21,13 +23,23 @@ class MainActivityTest {
     }
 
     @Test
-    fun searchTest() {
-        composeTestRule.onNodeWithTag("search_input").performClick()
-        composeTestRule.onNodeWithTag("search_input").performTextInput("tv")
+    fun integrationTest() {
+        composeTestRule.onNodeWithTag("search_input")
+            .performClick()
+            .performTextInput("tv")
         composeTestRule.waitForIdle()
-        composeTestRule.waitUntil(10_000) {
-            composeTestRule.mainClock.currentTime >= 9_000
-        }
-        composeTestRule.onNodeWithTag("item_list").assertExists()
+        composeTestRule.waitFor(1_000)
+        composeTestRule.onNodeWithTag("item_list")
+            .assertExists()
+            .onChildren()
+            .filter(hasClickAction())
+            .onFirst()
+            .assert(hasTestTag("product_MCO857660267"))
+            .performClick()
+
+        composeTestRule.waitFor(1_000)
+        composeTestRule.onNodeWithTag("detail_content").assertExists()
+        composeTestRule.onNodeWithTag("buy_button").performClick()
+        composeTestRule.waitForIdle()
     }
 }

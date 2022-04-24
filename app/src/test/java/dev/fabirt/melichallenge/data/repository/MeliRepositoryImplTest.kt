@@ -1,6 +1,5 @@
 package dev.fabirt.melichallenge.data.repository
 
-import arrow.core.Either
 import dev.fabirt.melichallenge.TestUtil
 import dev.fabirt.melichallenge.data.mapper.toDomainEntity
 import dev.fabirt.melichallenge.data.network.entities.ProductDetailDto

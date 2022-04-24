@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -132,6 +133,7 @@ private fun DetailContent(
 
     Column(
         modifier = Modifier
+            .testTag("detail_content")
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(vertical = 16.dp)
@@ -233,6 +235,7 @@ private fun DetailContent(
         Button(
             onClick = onBuyNow,
             modifier = Modifier
+                .testTag("buy_button")
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             elevation = ButtonDefaults.elevation(0.dp, 0.dp),
