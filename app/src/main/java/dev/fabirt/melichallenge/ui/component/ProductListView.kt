@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import dev.fabirt.melichallenge.domain.entities.Product
 import dev.fabirt.melichallenge.util.clearFocus
@@ -31,7 +32,8 @@ fun ProductListView(
     LazyColumn(
         state = listState,
         contentPadding = PaddingValues(vertical = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.testTag("item_list")
     ) {
         itemsIndexed(data) { index: Int, item: Product ->
             ProductView(product = item) {

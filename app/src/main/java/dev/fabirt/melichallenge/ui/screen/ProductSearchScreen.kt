@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -50,7 +51,8 @@ fun ProductSearchScreen() {
                 value = query,
                 onValueChange = searchViewModel::changeQuery,
                 onValueClear = searchViewModel::clearQuery,
-                onDone = { clearFocus(focusManager, textInputService) }
+                onDone = { clearFocus(focusManager, textInputService) },
+                modifier = Modifier.testTag("search_input")
             )
             when (searchResult) {
                 is Resource.Error -> {
