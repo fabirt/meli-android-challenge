@@ -9,6 +9,7 @@ import dev.fabirt.melichallenge.data.network.client.MeliApiClient
 import dev.fabirt.melichallenge.data.network.service.MeliService
 import dev.fabirt.melichallenge.data.network.service.MeliServiceImpl
 import io.ktor.client.*
+import io.ktor.client.engine.android.*
 import javax.inject.Singleton
 
 @Module
@@ -17,7 +18,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(): HttpClient = KtorHttpClient.create()
+    fun provideHttpClient(): HttpClient = KtorHttpClient.create(
+        Android.create {
+            connectTimeout = 60_000
+            socketTimeout = 60_000
+        }
+    )
 
     @Provides
     @Singleton
