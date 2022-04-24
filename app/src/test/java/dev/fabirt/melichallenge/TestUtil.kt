@@ -1,5 +1,9 @@
 package dev.fabirt.melichallenge
 
+import dev.fabirt.melichallenge.data.network.entities.PictureDto
+import dev.fabirt.melichallenge.data.network.entities.ProductDetailDto
+import dev.fabirt.melichallenge.data.network.entities.ProductShippingDto
+
 object TestUtil {
 
     val encodedSearchResult = """
@@ -45,4 +49,25 @@ object TestUtil {
     const val expectedPagingTotal = 2368
 
     const val expectedDetailId = "MCO857660267"
+
+    val detailDto = ProductDetailDto(
+        id = "MCO857660267",
+        siteId = "MCO",
+        title = "Smart Tv Samsung Series 8 Un50au8000kxzl Led 4k 50 100v/240v",
+        subtitle = null,
+        price = 2129900,
+        basePrice = 2129900,
+        soldQuantity = 50,
+        availableQuantity = 1,
+        thumbnail = "http://http2.mlstatic.com/D_866962-MLA47916973959_102021-I.jpg\",\"secure_thumbnail\": \"https://http2.mlstatic.com/D_866962-MLA47916973959_102021-I.jpg",
+        permalink = "https://articulo.mercadolibre.com.co/MCO-857660267-smart-tv-samsung-series-8-un50au8000kxzl-led-4k-50-100v240v-_JM",
+        pictures = listOf(
+            PictureDto("", ""),
+            PictureDto("", "")
+        ),
+        shipping = ProductShippingDto(
+            freeShipping = true,
+            storePickUp = false
+        )
+    )
 }

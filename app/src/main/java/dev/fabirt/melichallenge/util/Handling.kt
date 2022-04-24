@@ -13,16 +13,12 @@ suspend fun <T> runCatching(
     return try {
         block()
     } catch (e: AppException) {
-        Log.e("AppException caught", e.toString())
         Either.Left(e.toFailure())
     } catch (e: UnknownHostException) {
-        Log.e("UnknownHostException caught", e.toString())
         Either.Left(Failure.Network)
     } catch (e: CancellationException) {
-        Log.e("CancellationException caught", e.toString())
         Either.Left(Failure.Cancellation)
     } catch (e: Exception) {
-        Log.e("Exception caught", e.toString())
         Either.Left(Failure.Unexpected)
     }
 }
