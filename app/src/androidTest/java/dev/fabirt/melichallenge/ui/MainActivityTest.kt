@@ -4,7 +4,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dev.fabirt.melichallenge.util.waitFor
+import dev.fabirt.melichallenge.util.waitUntilExists
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,18 +28,14 @@ class MainActivityTest {
             .performClick()
             .performTextInput("tv")
         composeTestRule.waitForIdle()
-        composeTestRule.waitFor(1_000)
+        composeTestRule.waitUntilExists(hasTestTag("item_list"))
         composeTestRule.onNodeWithTag("item_list")
-            .assertExists()
             .onChildren()
             .filter(hasClickAction())
             .onFirst()
             .assert(hasTestTag("product_MCO857660267"))
             .performClick()
-
-        composeTestRule.waitFor(1_000)
-        composeTestRule.onNodeWithTag("detail_content").assertExists()
+        composeTestRule.waitUntilExists(hasTestTag("detail_content"))
         composeTestRule.onNodeWithTag("buy_button").performClick()
-        composeTestRule.waitForIdle()
     }
 }
