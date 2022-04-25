@@ -6,6 +6,22 @@ All data provided by [Meli API](https://developers.mercadolibre.com.ar/es_ar/api
 
 ## Results
 
+<img
+    alt="docs_01"
+    height="400"
+    src="docs/docs_01.png" />
+<img
+    alt="docs_02"
+    height="400"
+    src="docs/docs_02.png" />
+<img
+    alt="docs_03"
+    height="400"
+    src="docs/docs_03.png" />
+<img
+    alt="docs_04"
+    height="400"
+    src="docs/docs_04.png" />
 
 ## Architecture
 
