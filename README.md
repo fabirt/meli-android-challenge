@@ -4,6 +4,10 @@ Android App built with Jetpack Compose, Hilt for dependency injection, and Ktor 
 
 All data provided by [Meli API](https://developers.mercadolibre.com.ar/es_ar/api-docs-es).
 
+## Demo
+
+[Download APK](https://github.com/fabirt/meli-challenge/releases/download/v1.0.0/app-release.apk) from releases page.
+
 ## Results
 
 <img
